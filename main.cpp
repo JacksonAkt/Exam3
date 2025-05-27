@@ -9,6 +9,8 @@
 #include <stack>
 #include <queue>
 #include <iostream>
+#include <cctype>
+#include <iomanip>
 
 
 using namespace std;
@@ -121,11 +123,9 @@ void maps()
 
 
 
-/* Vector part */
+/* Vector part */ 
 int vectorMenu()
 {
-    system("cls");
-    cout << "\n In C++, vector is a dynamic array that stores collection of elements same type in contiguous memory. It has the ability to resize itself automatically when an element is inserted or deleted. Vector elements are placed in contiguous storage so that they can be accessed and traversed using iterators or indexes. ";
     cout << "\n\n\tVector Menu Options";
     cout << "\n\t" << string(80, char(205));
     cout << "\n\t1. Add (push_back) an element";
@@ -190,6 +190,74 @@ void VectorRetrieve(const vector<string>& vectors)
     }
 }
 
+//tell if a symbol exists in the vector
+int findVector(const vector<string>& vectors, string element, int size)
+{
+    if (size <= 0) return -1;
+        
+    if (vectors[size - 1] == element) return size - 1;
+    else {
+        return findVector(vectors, element, size - 1);
+    }
+}
+
+void deleteAll(vector<string>& vectors, string element, vector<string>::iterator it)
+{
+    if (it == vectors.end()) return; 
+    if (*it == element) {
+        it = vectors.erase(it);
+        deleteAll(vectors, element, it);
+    }
+    else {
+        deleteAll(vectors, element, it + 1);
+    }
+}
+
+
+void VectorErase(vector<string>& vectors)
+{
+    if (vectors.size() == 0)
+    {
+        cout << "\n\tERROR: Erase operation cannot be performed on an empty vector.";
+    }
+    else {
+        string StringErase = inputString("\n\tSpecify an Element Symbol: ",false);
+
+
+        if (findVector(vectors, StringErase, vectors.size()) == -1)
+        {
+            cout << "\n\t" << StringErase << " cannot be found from the vector container."; 
+        }
+        else {
+            char choice = toupper(inputChar("\n\tDo you want to remove (O-one or A-all) element(s): ", "OA"));
+            switch (choice)
+            {
+            case 'A':                                                                                  //FIX 
+                deleteAll(vectors, StringErase, vectors.begin());
+                cout << "\n\tAll " << choice << " has been removed from the vector.";
+                break;
+            case 'O': 
+                auto it = vectors.begin() + findVector(vectors, StringErase, vectors.size());
+                vectors.erase(it);
+                cout << "\n\tFirst found " << choice << " has been removed from the vector.";
+                break;
+            }
+        }
+    }
+}
+
+void VectorSort(vector<string>& vectors)
+{
+    if (vectors.size() == 0)
+    {
+        cout << "\n\tERROR: Sort operation cannot be performed on an empty vector.";
+    }
+    else {
+        sort(vectors.begin(), vectors.end());
+        cout << "\n\tThe vector has been sorted in ascending order.";
+    }
+}
+
 void VectorClear(vector<string>& vectors)
 {
     if (vectors.size() == 0)
@@ -202,17 +270,42 @@ void VectorClear(vector<string>& vectors)
     }
 }
 
+//display all elements in the vector
+void displayVector(const vector<string>& vectors, int i)
+{
+    if (i >= vectors.size()) return; 
+
+    cout << "[" << setw(2) << right << vectors[i] << "]";
+    displayVector(vectors, i + 1);
+}
+
+//display the indices of all elements in the vector
+void displayIndex(const vector<string>& vectors, int j)
+{
+    if(j >= vectors.size()) return;
+
+    cout << j << "   ";
+    displayIndex(vectors, j+1);
+}
+
 void vectors()
 {
     vector<string> elementVector; 
     do
     {
+        system("cls");
+        cout << "\n In C++, vector is a dynamic array that stores collection of elements same type in contiguous memory. It has the ability to resize itself automatically when an element is inserted or deleted. Vector elements are placed in contiguous storage so that they can be accessed and traversed using iterators or indexes. ";
         if (elementVector.empty()) {
             cout << "\n\n\tThe current vector is empty.";
         }
         else {
-            cout << "\n\n\tThe current vector contains " << elementVector.size() << " elements"; 
-            cout << "\n\taddress: " << elementVector.data(); 
+            cout << "\n\n\tThe current vector contains " << elementVector.size() << " elements.\n"; 
+
+            cout << "\n\t\t"; 
+            displayVector(elementVector, 0);
+            cout << "\n\tIndex:  ";
+            displayIndex(elementVector, 0);
+            cout << "\n\tAddress: " << elementVector.data(); 
         }
         cout << "\n\n";
         switch (vectorMenu())
@@ -221,8 +314,8 @@ void vectors()
         case 1:  VectorAdd(elementVector);  break;
         case 2:  VectorInsert(elementVector); break;
         case 3:  VectorRetrieve(elementVector);  break;
-        case 4:  break;
-        case 5:  break;
+        case 4:  VectorErase(elementVector);  break;
+        case 5:  VectorSort(elementVector);  break;
         case 6:  VectorClear(elementVector);  break;
 
         default: cout << "\t\tERROR - Invalid option. Please re-enter."; break;
