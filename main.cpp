@@ -294,7 +294,7 @@ void vectors()
     do
     {
         system("cls");
-        cout << "\n In C++, vector is a dynamic array that stores collection of elements same type in contiguous memory. It has the ability to resize itself automatically when an element is inserted or deleted. Vector elements are placed in contiguous storage so that they can be accessed and traversed using iterators or indexes. ";
+        cout << "\n\tIn C++, vector is a dynamic array that stores collection of elements same type in contiguous memory. It has the ability to resize itself automatically when an element is inserted or deleted. Vector elements are placed in contiguous storage so that they can be accessed and traversed using iterators or indexes. ";
         if (elementVector.empty()) {
             cout << "\n\n\tThe current vector is empty.";
         }
@@ -413,8 +413,6 @@ void stacks()
 /* Queue part*/
 int queueMenu()
 {
-    system("cls");
-    cout << " Queues are type of container adaptors that operate in a first in first out (FIFO) type of arrangement.Elements are inserted / pushed(enqueued) at the rear and are removed / popped(dequeued) from the front.Queues use an encapsulated object of deque or list(sequential container class) as its underlying container, providing a specific set of member functions to access elements..";
     cout << "\n\n\tQueue Menu Options";
     cout << "\n\t" << string(80, char(205));
     cout << "\n\t1. Enqueue (push into the rear)";
@@ -428,18 +426,90 @@ int queueMenu()
     return inputInteger("\n\tSpecify an option: ", 0, 4);
 }
 
+void Enqueue(queue<string>& queues)
+{
+    string NewElement = inputString("\n\tSpecify an Element Symbol: ", false);
+
+    if (false) //mapName.find(NewElement) 
+    {
+        cout << "\n\tERROR: Element Symbol, " << NewElement << ", does not exist in the map Elements and therefore it cannot be added to the queue.";
+    }
+    else {
+        queues.push(NewElement);
+        cout << "\n\tCONFIRMATION: Element Symbol, " << NewElement << "' has been added to the rear of the queue.";
+    }
+}
+
+void RearQueue(queue<string>& queues)
+{
+    if (queues.empty())
+    {
+        cout << "\n\tERROR: No back element can be retrieved from an empty queue container.";
+    }
+    else {
+        cout << "\n\t[" << queues.back() << "] is at the back of the queue container.";
+    }
+}
+
+void FrontQueue(queue<string>& queues)
+{
+    if (queues.empty())
+    {
+        cout << "\n\tERROR: No front element can be retrieved from an empty queue container.";
+    }
+    else {
+        cout << "\n\t[" << queues.front() << "] is at the front of the queue container.";
+    }
+}
+
+void Dequeue(queue<string>& queues)
+{
+    if (queues.empty())
+    {
+        cout << "\n\tERROR: No dequeue (pop) operation can be performed on an empty queue container.";
+    }
+    else {
+
+        cout << "\n\t[" << queues.front() << "] has been dequeued (popped) from the queue container.";
+        queues.pop();
+
+    }
+}
+
+void displayQueue(const queue<string> queues)
+{
+    if (queues.empty()) return; 
+
+}
+
+
 void queues()
 {
+    queue<string> elementQueue; 
     do
     {
+        system("cls");
+        cout << "\n\tQueues are type of container adaptors that operate in a first in first out (FIFO) type of arrangement.Elements are inserted / pushed(enqueued) at the rear and are removed / popped(dequeued) from the front.Queues use an encapsulated object of deque or list(sequential container class) as its underlying container, providing a specific set of member functions to access elements..";
         cout << "\n\n";
+        if (elementQueue.empty()) {
+            cout << "\n\n\tThe current queue is empty.";
+        }
+        else {
+            cout << "\n\n\tThe current queue contains " << elementQueue.size() << " elements.\n";
+
+            cout << "\n\tin(rear) -> ";
+
+            cout << " -> out(front)";
+            
+            cout << "\n\tAddress: ";
+        }
         switch (queueMenu())
         {
         case 0:  return; break;
-        case 1:  break;
-        case 2:  break;
-        case 3:  break;
-        case 4:  break;
+        case 1: Enqueue(elementQueue); break;
+        case 2: RearQueue(elementQueue); break;
+        case 3: FrontQueue(elementQueue); break;
+        case 4: Dequeue(elementQueue); break;
 
         default: cout << "\t\tERROR - Invalid option. Please re-enter."; break;
         }
