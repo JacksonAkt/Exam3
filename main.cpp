@@ -410,7 +410,7 @@ void stacks()
 
 
 
-/* Queue part*/
+/* Queue part*/ 
 int queueMenu()
 {
     cout << "\n\n\tQueue Menu Options";
@@ -476,10 +476,15 @@ void Dequeue(queue<string>& queues)
     }
 }
 
-void displayQueue(const queue<string> queues)
+//display the queue from the rear to the front
+void displayQueue(queue<string> queues)
 {
     if (queues.empty()) return; 
 
+    string front = queues.front(); //update the front until the rear is removed
+    queues.pop();
+    displayQueue(queues);
+    cout << "[" << setw(2) << right << front << "] -> "; //display the front from the latest updates 
 }
 
 
@@ -498,8 +503,8 @@ void queues()
             cout << "\n\n\tThe current queue contains " << elementQueue.size() << " elements.\n";
 
             cout << "\n\tin(rear) -> ";
-
-            cout << " -> out(front)";
+            displayQueue(elementQueue);
+            cout << "out(front)";
             
             cout << "\n\tAddress: ";
         }
