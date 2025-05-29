@@ -16,6 +16,7 @@
 using namespace std;
 
 //prototype
+void drawing();
 void maps();
 void vectors();
 void lists();
@@ -35,7 +36,7 @@ int main()
     do
     {
         system("cls");
-        cout << "\n\n";
+        drawing();
         switch (menuOption())
         {
         case 'X':  return 0; break;
@@ -55,10 +56,58 @@ int main()
     return 1;
 }
 
+//display those nice figures above the menu function
+void drawing()
+{
+    cout << "\n\t" << char(218) << string(4, char(196)) << char(194) << string(10, char(196)) << char(191) << string(64, char(32));
+    cout << char(186) << char(32) << "in/out" << char(32) << char(186) << string(12, char(32)) << char(186) << string(3, char(32)) << "in" << string(3, char(32)) << char(186);
+
+    cout << "\n\t" << char(179) << char(32) << "Cr" << char(32) << char(179) << char(32) << "Creative" << char(32) << char(179) << string(64, char(32));
+    cout << char(186) << char(32) << char(218) << string(4, char(196)) << char(191) << char(32) << char(186) << string(12, char(32)) << char(186) << char(32) << char(218) << string(4, char(196)) << char(191) << char(32) << char(186);
+
+    cout << "\n\t" << char(195) << string(4, char(196)) << char(197) << string(10, char(196)) << char(180) << string(60, char(32));
+    cout << "top" << char(62) << char(186) << char(32) << char(179) << char(32) << "Ti" << char(32) << char(179) << char(32) << char(186) << string(7, char(32)) << "rear" << char(62) << char(186) << char(32) << char(179) << char(32) << "Pt" << char(32) << char(179) << char(32) << char(186);
+
+    cout << "\n\t" << char(179) << char(32) << "Op" << char(32) << char(179) << char(32) << "Optimism" << char(32) << char(179) << string(64, char(32));
+    cout << char(186) << char(32) << char(195) << string(4, char(196)) << char(180) << char(32) << char(186) << string(12, char(32)) << char(186) << char(32) << char(195) << string(4, char(196)) << char(180) << char(32) << char(186);
+
+    cout << "\n\t" << char(195) << string(4, char(196)) << char(197) << string(10, char(196)) << char(180) << string(6, char(32)) << char(218) << string(4, char(196)) << char(194) << string(4, char(196)) << char(194) << string(4, char(196)) << char(191);
+    cout << string(9, char(32)) << char(218) << string(4, char(196)) << char(191) << char(32) << char(218) << string(4, char(196)) << char(191) << char(32) << char(218) << string(4, char(196)) << char(191) << char(32);
+    cout << string(12, char(32)) << char(186) << char(32) << char(179) << char(32) << "Nu" << char(32) << char(179) << char(32) << char(186) << string(12, char(32));
+    cout << char(186) << char(32) << char(179) << char(32) << "Di" << char(32) << char(179) << char(32) << char(186);
+
+    cout << "\n\t" << char(179) << char(32) << "Fr" << char(32) << char(179) << char(32) << "Fearless" << char(32) << char(179);
+    cout << string(6, char(32)) << char(179) << char(32) << "Ju" << char(32) << char(179) << char(32) << "Ki" << char(32) << char(179) << char(32) << "Ma" << char(32) << char(179);
+    cout << string(7, char(32)) << char(218) << char(62) << char(179) << char(32) << "Up" << char(32) << char(179) << char(62) << char(179) << char(32) << "Vi" << char(32) << char(179) << char(62) << char(179) << char(32) << "Pe" << char(32) << char(179);
+    cout << string(13, char(32)) << char(186) << char(32) << char(195) << string(4, char(196)) << char(180) << char(32) << char(186) << string(12, char(32)) << char(186) << char(32) << char(195) << string(4, char(196)) << char(180) << char(32) << char(186);
+
+    cout << "\n\t" << char(192) << string(4, char(196)) << char(193) << string(10, char(196)) << char(217) << string(6, char(32));
+    cout << char(192) << string(4, char(196)) << char(193) << string(4, char(196)) << char(193) << string(4, char(196)) << char(217);
+    cout << string(7, char(32)) << char(179) << char(32) << char(192) << string(4, char(196)) << char(217) << char(32) << char(192) << string(4, char(196)) << char(217) << char(32) << char(192) << string(4, char(196)) << char(217);
+    cout << string(13, char(32)) << char(186) << char(32) << char(179) << char(32) << "Cu" << char(32) << char(179) << char(32) << char(186) << string(6, char(32));
+    cout << "front" << char(62) << char(186) << char(32) << char(179) << char(32) << "Ag" << char(32) << char(179) << char(32) << char(186);
+
+    cout << "\n\t key " << "  value" << string(11, char(32)) << 0 << string(4, char(32)) << 1 << string(4, char(32)) << 2 << string(13, char(32)) << "head" << string(30, char(32));
+    cout << char(186) << char(32) << char(192) << string(4, char(196)) << char(217) << char(32) << char(186) << string(12, char(32));
+    cout << char(186) << char(32) << char(192) << string(4, char(196)) << char(217) << char(32) << char(186);
+
+    cout << "\n\t" << string(23, char(32)) << "(index)" << string(16, char(32)) << "(pointer)" << string(26, char(32));
+    cout << char(200) << string(8, char(205)) << char(188) << string(12, char(32)) << char(186) << "  out   " << char(186);
+
+    cout << "\n\n\t" << string(4, char(32)) << "Map" << string(20, char(32)) << "Vector" << string(17, char(32)) << "Linked List";
+    cout << string(22, char(32)) << "Stack" << string(17, char(32)) << "Queue" << string(3, char(32));
+
+}
+
+//display choice menu 
 char menuOption()
 {
     //main menu
-    cout << "\n\tStandard Template Library (STL) provides the built-in implementation of commonly used data structures known as containers.A container is a holder object that stores a collection of other objects(its elements).They are implemented as class templates, which allows great flexibility in the types supported as elements.A container manages the storage space for its elements and provides member functions to access them, either directly or through iterators(reference objects with similar properties to pointers).";
+    cout << "\n\n\tStandard Template Library (STL) provides the built-in implementation of commonly used data structures known";
+    cout << "\n\tas containers. A container is a holder object that stores a collection of other objects(its elements). They are";
+    cout << "\n\timplemented as class templates, which allows great flexibility in the types supported as elements. A container";
+    cout << "\n\tmanages the storage space for its elements and provides member functions to access them, either directly or through";
+    cout << "\n\titerators(reference objects with similar properties to pointers).";
 
 
     //need to display array size, index and first element here
