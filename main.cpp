@@ -553,9 +553,9 @@ void queues()
 
             cout << "\n\tin(rear) -> ";
             displayQueue(elementQueue);
-            cout << "out(front)";
+            cout << "out(front)\n";
             
-            cout << "\n\tAddress: ";
+            cout << "\n\tAddress: " << &elementQueue;
         }
         switch (queueMenu())
         {
