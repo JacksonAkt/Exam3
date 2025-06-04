@@ -17,6 +17,9 @@
 #include <iostream>
 #include <cctype>
 #include <iomanip>
+#include <fstream>
+#include <random>
+#include <sstream>
 
 
 using namespace std;
@@ -138,8 +141,6 @@ char menuOption()
 /* Map part */ //By Sammatha
 int mapMenu()
 {
-    system("cls");
-    cout << " In C++, maps are associative containers that store data in the form of key value pairs sorted on the basis of keys.No two mapped values can have the same keys.By default, it stores data in ascending order of the keys. ";
     cout << "\n\n\tMap Menu Options";
     cout << "\n\t" << string(80, char(205));
     cout << "\n\t1. Read text data file and insert into map container";
@@ -154,23 +155,167 @@ int mapMenu()
     return inputInteger("\n\tSpecify an option: ", 0, 5);
 }
 
+void mapsRead(map<string, string>& testMap)
+{
+    {
+
+        ifstream fileToRead;
+        string filename = inputString("\n\tSpecify a valid binary data file name to retrieve data from (elements.txt) : ", false);
+
+        string line;
+
+        fileToRead.open(filename);
+
+        if (!fileToRead) {
+            cout << "\n\tERROR: File, " << filename << ", cannot be found to read.";
+            return;
+        }
+
+        while (getline(fileToRead, line))
+        {
+            stringstream ss(line);
+            string key, value;
+            size_t hyphen = line.find('-');
+
+            if (hyphen != string::npos)
+            {
+                key = line.substr(0, hyphen);
+                value = line.substr(hyphen + 1);
+                testMap[key] = value;
+            }
+        }
+
+        cout << "\n\tCONFIRMATION: " << testMap.size() << " element(s) have been stored/inserted into the map container.";
+        fileToRead.close();
+    }
+}
+
+void mapsDisplay(map<string, string>& testMap, map<string, string>::iterator it)
+{
+    if (it == testMap.end())
+    {
+        cout << "\n\tCONFIRMATION: " << testMap.size() << " of element(s) are in the map container.";
+        return;
+    }
+
+    cout << "\t" << it->first << "  " << it->second << "\n";
+    mapsDisplay(testMap, next(it));
+}
+
+void mapsInsert(map<string, string>& testMap)
+{
+    string toAdd = inputString("\n\tSpecify an Element Symbol : ", false);
+
+    if (toAdd.length() > 2)
+    {
+        cout << "\n\tERROR: Invalid Element Symbol. Must be 1-2 characters long";
+        return;
+    }
+
+    //testMap.find(toAdd);
+    if (testMap.count(toAdd) > 0)
+    {
+        cout << "\n\tERROR: Element, " << toAdd << " has already existed in the map container and therefore it cannot be re-inserted.";
+    }
+    else
+    {
+        string toAddVal = inputString("\n\tSpecify the Element Name : ", false);
+        testMap.emplace(toAdd, toAddVal);
+        cout << "\n\tCONFIRMATION: New element, " << toAdd << " - " << toAddVal << ", has been inserted into the map container.";
+    }
+}
+
+void mapsDelete(map<string, string>& testMap)
+{
+    string toDel = inputString("\n\tSpecify an element symbol : ", false);
+
+    if (toDel.length() > 2)
+    {
+        cout << "\n\tERROR: Invalid Element Symbol. Must be 1-2 characters long";
+        return;
+    }
+
+    if (testMap.count(toDel) > 0)
+    {
+        testMap.erase(toDel);
+        cout << "\n\tCONFIRMATION: Element, " << toDel << " has been deleted/erased from the map container.";
+    }
+    else
+    {
+        cout << "\n\tERROR: Element Symbol, " << toDel << ", does not exist in the map of Elements and therefore it cannot be deleted from the map container.";
+    }
+}
+
+void mapsGame(map<string, string>& testMap, int& q, int& r, int& w)
+{
+    if (testMap.size() == 0) return;
+
+    //pair keys to vector
+    vector<string>keys;
+    for (const auto& pair : testMap)
+        (keys.push_back(pair.first));
+
+    //randomize index
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> distrib(0, keys.size() - 1);
+
+    int ranIndex = distrib(gen);
+    string ranKey = keys[ranIndex];
+    string ranValue = testMap[ranKey];
+
+    string answer;
+    tolower(answer[0]);
+    tolower(ranValue[0]);
+
+
+    cout << "\n\tWhat is the element name of " << ranKey << "? ";
+    getline(cin, answer);
+    q++;
+
+    if (answer == ranValue)
+    {
+        cout << "\n\tCONFIRMATION: Correct answer! ";
+        r++;
+    }
+    else
+    {
+        cout << "\n\tERROR: Incorrect! The answer is " << ranValue;
+        w++;
+    }
+
+    cout << "\n\t" << q << " Question(s)";
+    cout << "\n\t" << r << " correct answer(s)";
+    cout << "\n\t" << w << " wrong answer(s)";
+
+}
+
 void maps()
 {
+    map<string, string>testMap;
+    map<string, string>::iterator it;
+
+    int right = 0;
+    int wrong = 0;
+    int questions = 0;
     do
     {
+        system("cls");
+        cout << "\n\tIn C++, maps are associative containers that store data in the form of key value pairs sorted on the basis of keys.No two mapped values can have the same keys.By default, it stores data in ascending order of the keys. ";
+        int size = testMap.size();
         cout << "\n\n";
         switch (mapMenu())
         {
         case 0:  return; break;
-        case 1:  break;
-        case 2:  break;
-        case 3:  break;
-        case 4:  break;
-        case 5:  break;
+        case 1: mapsRead(testMap); break;
+        case 2: mapsDisplay(testMap, testMap.begin()); break;
+        case 3: mapsInsert(testMap); break;
+        case 4: mapsDelete(testMap); break;
+        case 5: mapsGame(testMap, right, wrong, questions); break;
 
         default: cout << "\t\tERROR - Invalid option. Please re-enter."; break;
         }
-        cout << "\n";
+        cout << "\n\n";
         system("pause");
     } while (true);
 }
@@ -218,10 +363,17 @@ void VectorInsert(vector<string>& vectors)
         cout << "\n\tERROR: Element Symbol, " << NewElement << ", does not exist in the map Elements and therefore it cannot be added to the vector.";
     }
     else {
-        int i = inputInteger("\n\tSpecify an index from the vector to be inserted : ", 0, vectors.size() - 1);
-        auto it = vectors.begin() + i;
-        vectors.insert(it, NewElement);
-        cout << "\n\tCONFIRMATION: Element, " << NewElement << ", has been inserted at index " << i << " of the vector container.";
+
+        if (vectors.empty()) {
+            vectors.push_back(NewElement);
+            cout << "\n\tCONFIRMATION: Element Symbol, " << NewElement << ", has been inserted into the back of the vector.";
+        }
+        else {
+            int i = inputInteger("\n\tSpecify an index from the vector to be inserted : ", 0, vectors.size() - 1);
+            auto it = vectors.begin() + i;
+            vectors.insert(it, NewElement);
+            cout << "\n\tCONFIRMATION: Element, " << NewElement << ", has been inserted at index " << i << " of the vector container.";
+        }
     }
 }
 
@@ -459,7 +611,14 @@ void lists()
         case 1:
             //Add (push) element
             //**need to check for map list
+
             element = inputString("\n\tSpecify an Element Symbol: ", false);
+
+            if (false) //mapName.find(NewElement) 
+            {
+                cout << "\n\tERROR: Element Symbol, " << element << ", does not exist in the map Elements and therefore it cannot be added to the list.";
+                return;
+            }
 
             if (elementList.empty()) {
                 elementList.push_front(element);
@@ -482,6 +641,13 @@ void lists()
             //Insert element
             //**need to check for map list
             element = inputString("\n\tSpecify an Element Symbol: ", false);
+
+            if (false) //mapName.find(NewElement) 
+            {
+                cout << "\n\tERROR: Element Symbol, " << element << ", does not exist in the map Elements and therefore it cannot be inserted into the list.";
+                return;
+            }
+
             //**need to check for linked list
             pivot = inputString("\n\tSpecify an Element Symbol: ", false);
 
@@ -505,6 +671,12 @@ void lists()
             break;
         case 3:
             //remove elements
+
+            if (elementList.empty()) {
+                cout << "\n\tERROR: Delete operation cannot be performed on an empty list container.";
+                return;
+            }
+
             element = inputString("\n\tSpecify an Element Symbol: ", false);
 
             if (findNode(elementList, element) == elementList.end())
@@ -531,12 +703,25 @@ void lists()
             break;
         case 4:
             //sort elements
-            if (!elementList.empty())
+
+            if (!elementList.empty()) {
                 elementList.sort();
-            cout << "\n\tCONFIRMATION: The list container have been sorted.";
+                cout << "\n\tCONFIRMATION: The list container have been sorted.";
+            }
+            else {
+                cout << "\n\tERROR: Sort operation cannot be performed on an empty list container.";
+            }
+
+
             break;
         case 5:
             //clear elements
+
+            if (elementList.empty()) {
+                cout << "\n\tERROR: Clear operation cannot be performed on an empty list container.";
+                return;
+            }
+
             elementList.clear();
             cout << "\n\tCONFIRMATION: All Elements have been cleared from list";
             break;
@@ -608,8 +793,14 @@ void stacks()
         case 0:  return; break;
         case 1:
             //push
-            //**need to check for map list
             element = inputString("\n\tSpecify an Element Symbol: ", false);
+
+            if (false) //mapName.find(NewElement) 
+            {
+                cout << "\n\tERROR: Element Symbol, " << element << ", does not exist in the map Elements and therefore it cannot be added to the stack.";
+                return;
+            }
+
             elementStack.push(element);
             cout << "\n\tCONFIRMATION: [" << element << "] has been pushed onto the stack container.";
             break;
@@ -753,4 +944,5 @@ void queues()
         system("pause");
     } while (true);
 }
+
 
