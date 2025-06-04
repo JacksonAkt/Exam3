@@ -1,6 +1,12 @@
 //Coordinators : Doan (Lam) Nguyen, Sammatha Magill, and Angel Prak
 //Description  : Exam 3
-//Date         : May 31, 2025
+//Date         : June 4th, 2025
+
+//Division of tasks
+//Me : Queue, Vector, main (partly) 
+//Sammatha : Map, main 
+//Angel : Stack, List
+
 
 #include"input.h"
 #include <map>
@@ -29,7 +35,7 @@ int listMenu();
 int stackMenu();
 int queueMenu();
 
-
+//Our works 
 int main()
 {
     //main menu
@@ -111,7 +117,7 @@ char menuOption()
 
 
     //need to display array size, index and first element here
-    cout << "\n\n\tCMPR121 - Exam#3: STL (Standard Template Library) Containers and Container Adaptors by Samantha Magill, Doan (Lam) Nguyen, and Angel";
+    cout << "\n\n\tCMPR121 - Exam#3: STL (Standard Template Library) Containers and Container Adaptors by Samantha Magill, Doan (Lam) Nguyen, and Angel Prak";
     cout << "\n\t" << string(80, char(205));
     cout << "\n\t M. Map Associative Container";
     cout << "\n\t V. Vector (contiguous memory) Sequence Container";
@@ -129,7 +135,7 @@ char menuOption()
 
 
 
-/* Map part */
+/* Map part */ //By Sammatha
 int mapMenu()
 {
     system("cls");
@@ -172,7 +178,7 @@ void maps()
 
 
 
-/* Vector part */ 
+/* Vector part */ //By me 
 int vectorMenu()
 {
     cout << "\n\n\tVector Menu Options";
@@ -190,7 +196,7 @@ int vectorMenu()
     return inputInteger("\n\tSpecify an option: ", 0, 6);
 }
 
-void VectorAdd(vector<string>& vectors)
+void VectorAdd(vector<string>& vectors) 
 {
     string NewElement = inputString("\n\tSpecify an Element Symbol: ", false);
 
@@ -234,7 +240,7 @@ void VectorRetrieve(const vector<string>& vectors)
         }
         catch (out_of_range& exception)
         {
-            cout << "\n\tEXEPTIONAL ERROR: Invalid subscript.";
+            cout << "\n\tEXCEPTIONAL ERROR: Invalid subscript.";
         }
     }
 }
@@ -250,6 +256,7 @@ int findVector(const vector<string>& vectors, string element, int size)
     }
 }
 
+//delete all found copies of an element in a vector
 void deleteAll(vector<string>& vectors, string element, vector<string>::iterator it)
 {
     if (it == vectors.end()) return; 
@@ -283,7 +290,7 @@ void VectorErase(vector<string>& vectors)
             {
             case 'A':                                                                                  //FIX 
                 deleteAll(vectors, StringErase, vectors.begin());
-                cout << "\n\tAll " << choice << " has been removed from the vector.";
+                cout << "\n\tAll " << StringErase << " has been removed from the vector.";
                 break;
             case 'O': 
                 auto it = vectors.begin() + findVector(vectors, StringErase, vectors.size());
@@ -377,12 +384,10 @@ void vectors()
 
 
 
-/* Linked list part */
+/* Linked list part */ //By Angel 
 int listMenu()
 {
-    system("cls");
-    cout << " In C++, list container implements a doubly linked list in which each element contains the address of next and previous element in the list.It stores data in non - contiguous memory, hence providing fast insertion and deletion once the position of the element is known.";
-    cout << "\n\n\tList Menu Options";
+    cout << "\n\n\tLinked List Menu Options";
     cout << "\n\t" << string(80, char(205));
     cout << "\n\t1. Add (push) an element";
     cout << "\n\t2. Insert an element after";
@@ -396,23 +401,149 @@ int listMenu()
     return inputInteger("\n\tSpecify an option: ", 0, 5);
 }
 
+//recursion function to print a list
+void printList(list <string>& l, list <string> ::iterator it)
+{
+    //base case ends the recursive functionif the iterator is the end of linked list
+    if (it == l.end())
+    {
+        cout << "[Null]";
+        return;
+    }
+    //else it prints the current node and calls back the function with an incremented iterator
+    else
+    {
+        cout << "[" << *it << "]->";
+        printList(l, ++it);
+    }
+}
+
+//creates an iterator to transverse the list
+list<string> ::iterator findNode(list<string>& l, string n)
+{
+    list<string> ::iterator i;
+    for (i = l.begin(); i != l.end(); ++i)
+    {
+        if (*i == n)
+            return i;
+    }
+
+    //if end is returned as iteraotr value then return an error message
+    return l.end();
+}
+
 void lists()
 {
+    list<string> elementList;
+    list<string> ::iterator node;
+
+    string element = "null";
+    string pivot = "null";
     do
     {
+        system("cls");
+        cout << "\n\tIn C++, list container implements a doubly linked list in which each element contains the address of next and previous element in the list.It stores data in non - contiguous memory, hence providing fast insertion and deletion once the position of the element is known.";
+        if (elementList.empty())
+            cout << "\n\n\t Current list is empty...";
+        else
+        {
+            cout << "\n\n\tThe current linked list contains " << elementList.size() << " element:";
+            list <string> ::iterator it = elementList.begin();
+            cout << "\n\n\t[Head]->";
+            printList(elementList, it);
+        }
         cout << "\n\n";
         switch (listMenu())
         {
         case 0:  return; break;
-        case 1:  break;
-        case 2:  break;
-        case 3:  break;
-        case 4:  break;
-        case 5:  break;
+        case 1:
+            //Add (push) element
+            //**need to check for map list
+            element = inputString("\n\tSpecify an Element Symbol: ", false);
+
+            if (elementList.empty()) {
+                elementList.push_front(element);
+                cout << "\n\tCONFIRMATION: Element" << element << "has been added to the empty list.";
+            }
+            else
+            {
+                if (toupper(inputChar("\n\n\t\tAdd to the (F-front) or from the (B-back): ", 'F', 'B')) == 'F')
+                {
+                    elementList.push_front(element);
+                    cout << "\n\tCONFIRMATION: Element [" << element << "] has been pushed to the front of the list container.";
+                }
+                else {
+                    elementList.push_back(element);
+                    cout << "\n\tCONFIRMATION: Element [" << element << "] has been pushed to the back of the list container.";
+                }
+            }
+            break;
+        case 2:
+            //Insert element
+            //**need to check for map list
+            element = inputString("\n\tSpecify an Element Symbol: ", false);
+            //**need to check for linked list
+            pivot = inputString("\n\tSpecify an Element Symbol: ", false);
+
+            if (findNode(elementList, pivot) == elementList.end())
+            {
+                cout << "\n\tERROR: Element" << pivot << "cannot be found from the list container.";
+            }
+            else
+            {
+                node = findNode(elementList, pivot);
+                if (toupper(inputChar("\n\n\t\tInsert (B-before) or (A-after) the existing element : ", 'B', 'A')) == 'B')
+                {
+                    elementList.emplace(node, element);
+                    cout << "\n\tCONFIRMATION: Element [" << element << "] has been inserted before the existing element [" << pivot << "] from the list container.";
+                }
+                else {
+                    elementList.emplace(++node, element);
+                    cout << "\n\tCONFIRMATION: Element [" << element << "] has been inserted after the existing element [" << pivot << "] from the list container.";
+                }
+            }
+            break;
+        case 3:
+            //remove elements
+            element = inputString("\n\tSpecify an Element Symbol: ", false);
+
+            if (findNode(elementList, element) == elementList.end())
+            {
+                cout << "\n\tERROR: Element [" << element <<"] is not found in the list";
+            }
+            else
+            {
+                node = findNode(elementList, element);
+
+                if (toupper(inputChar("\n\n\t\tRemove (O-one) or (A-all) element(s): ", 'O', 'A')) == 'O') {
+                    elementList.erase(node);
+                    cout << "\n\tCONFIRMATION: Element [" << element << "] has been removed once from the list container.";
+                }
+                else {
+                    while (findNode(elementList, element) != elementList.end())
+                    {
+                        elementList.erase(node);
+                        node = findNode(elementList, element);
+                    }
+                    cout << "\n\tCONFIRMATION: All element [" << element << "] have been removed from the list container.";
+                }
+            }
+            break;
+        case 4:
+            //sort elements
+            if (!elementList.empty())
+                elementList.sort();
+            cout << "\n\tCONFIRMATION: The list container have been sorted.";
+            break;
+        case 5:
+            //clear elements
+            elementList.clear();
+            cout << "\n\tCONFIRMATION: All Elements have been cleared from list";
+            break;
 
         default: cout << "\t\tERROR - Invalid option. Please re-enter."; break;
         }
-        cout << "\n";
+        cout << "\n\n";
         system("pause");
     } while (true);
 }
@@ -420,11 +551,9 @@ void lists()
 
 
 
-/* Stack part*/
+/* Stack part*/ //By Angel 
 int stackMenu()
 {
-    system("cls");
-    cout << "  Stacks are a type of container adaptors with LIFO(Last In First Out) type of working, where a new element is added(pushed) at one end(top) and an element is removed(popped) from that end only.Stack uses an encapsualted object of either vector or deque(by default) or list(sequential container class) as its underlying container, providing a specific set of member functions to access its elements.";
     cout << "\n\n\tStack Menu Options";
     cout << "\n\t" << string(80, char(205));
     cout << "\n\t1. Push";
@@ -437,21 +566,74 @@ int stackMenu()
     return inputInteger("\n\tSpecify an option: ", 0, 3);
 }
 
+//recursion function for printing the stack
+void printStack(stack <string>& s)
+{
+    //Base case: once it reaches the bottom of the stack
+    if (s.empty())
+        return;
+
+    //saves the top in a string to push back after it is popped off
+    string top = s.top();
+
+    cout << "[" << top << "]";
+
+    s.pop();
+
+    printStack(s);
+
+    s.push(top);
+}
+
 void stacks()
 {
+    stack <string> elementStack;
+
+    string element = "null";
     do
     {
+        system("cls");
+        cout << "\n\tStacks are a type of container adaptors with LIFO(Last In First Out) type of working, where a new element is added(pushed) at one end(top) and an element is removed(popped) from that end only.Stack uses an encapsualted object of either vector or deque(by default) or list(sequential container class) as its underlying container, providing a specific set of member functions to access its elements.";
+        if (elementStack.empty())
+            cout << "\n\n\t Current list is empty...";
+        else
+        {
+            cout << "\n\n\tThe current stack contains " << elementStack.size();
+            cout << "\n\n\tTop->";
+            printStack(elementStack);
+        }
         cout << "\n\n";
         switch (stackMenu())
         {
         case 0:  return; break;
-        case 1:  break;
-        case 2:  break;
-        case 3:  break;
+        case 1:
+            //push
+            //**need to check for map list
+            element = inputString("\n\tSpecify an Element Symbol: ", false);
+            elementStack.push(element);
+            cout << "\n\tCONFIRMATION: [" << element << "] has been pushed onto the stack container.";
+            break;
+        case 2:
+            //show top
+            if (elementStack.empty())
+                cout << "\n\tERROR: No top element can be retrieved from an empty stack container.";
+            else
+                cout << "\n\n\t[" << elementStack.top() << "] is at the top of the stack container.";
+            break;
+        case 3:
+            //pop
+            if (elementStack.empty())
+                cout << "\n\tERROR: No pop operation can be performed from an empty stack container.";
+            else
+            {
+                cout << "\n\tCONFIRMATION: [" << elementStack.top() << "] will be popped off from the stack container.";
+                elementStack.pop();
+            }
+            break;
 
         default: cout << "\t\tERROR - Invalid option. Please re-enter."; break;
         }
-        cout << "\n";
+        cout << "\n\n";
         system("pause");
     } while (true);
 }
@@ -459,7 +641,7 @@ void stacks()
 
 
 
-/* Queue part*/ 
+/* Queue part*/ //By me
 int queueMenu()
 {
     cout << "\n\n\tQueue Menu Options";
@@ -567,7 +749,8 @@ void queues()
 
         default: cout << "\t\tERROR - Invalid option. Please re-enter."; break;
         }
-        cout << "\n";
+        cout << "\n\n";
         system("pause");
     } while (true);
 }
+
